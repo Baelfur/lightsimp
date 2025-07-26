@@ -1,0 +1,42 @@
+// Generated on database hydration
+Table observability {
+  obs_asset_id           serial [pk]
+  obs_ip_address     text [not null]
+  obs_hostname       text [not null]
+  obs_fqdn           text [not null]
+  obs_status         text [not null] 
+}
+
+// Generated on database hydration
+Table inventory {
+  inv_asset_id      serial [pk]
+  inv_ip_address     text [not null]
+  inv_hostname       text [not null]
+  inv_vendor         text [not null]
+  inv_model          text [not null]
+}
+
+// Generated on database hydration
+Table ipam {
+  ipam_asset_id      serial [pk]
+  ipam_ip_address    text [pk]
+  ipam_fqdn          text [not null]
+  ipam_region        text [not null]
+}
+
+// Generated via data cleansing
+Table lightspeed_asset {
+  lightspeed_asset_id int [pk]
+  obs_asset_id       int [ref: > observability.obs_asset_id]
+  inv_asset_id       int [ref: > inventory.inv_asset_id]
+  ipam_asset_id      int [ref: > ipam.ipam_asset_id]
+  ip_address     text [not null]
+  hostname       text [not null]
+  fqdn           text [not null]
+  status         text [not null]
+  region         text
+  vendor         text
+  model          text
+  missing_in_ipam  boolean
+  missing_in_inventory boolean
+}
